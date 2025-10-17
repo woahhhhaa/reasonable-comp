@@ -21,7 +21,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY src ./src
 COPY data ./data
 
-ENV PYTHONPATH=/app \
+ENV PYTHONPATH=/app:/app/src \
     PORT=8000
 
 EXPOSE 8000
