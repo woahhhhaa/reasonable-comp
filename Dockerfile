@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
-WORKDIR /app/ownerpay
+WORKDIR /app
 
 # System deps for pandas/pyarrow
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -13,12 +13,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ownerpay/requirements.txt ./requirements.txt
+# Install Python deps from repo root requirements (matches local dev)
+COPY requirements.txt ./requirements.txt
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-COPY ownerpay /app/ownerpay
+# Copy source code and data used by the kernel
+COPY src ./src
+COPY data ./data
 
-ENV PYTHONPATH=/app/ownerpay \
+ENV PYTHONPATH=/app \
     PORT=8000
 
 EXPOSE 8000
