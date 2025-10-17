@@ -1,8 +1,10 @@
 import os
+from types import SimpleNamespace
 
 import sentry_sdk
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from fastapi import Depends, FastAPI
+import logging
+from pydantic import BaseModel, Field, NonNegativeFloat, NonNegativeInt, conint, constr
 
 sentry_dsn = os.getenv("SENTRY_DSN")
 if sentry_dsn:
@@ -16,11 +18,28 @@ class RoleSplit(BaseModel):
     percent: float = Field(ge=0, le=100)
 
 
+class Location(BaseModel):
+    state: constr(pattern=r"^[A-Z]{2}$")
+    msa_code: str = Field(pattern=r"^\d{5}$")
+
+
+class Business(BaseModel):
+    entity_type: constr(pattern=r"^(s_corp)$")
+    revenue: NonNegativeFloat
+    profit: float
+    headcount: NonNegativeInt
+
+
+class Owner(BaseModel):
+    hours_per_week: conint(ge=0, le=80)
+    experience_years: conint(ge=0, le=60)
+
+
 class EstimateRequest(BaseModel):
     tax_year: int = Field(ge=2024, le=2026)
-    location: dict  # {state:'CA', msa_code:'41860'}; refine on Day 2
-    business: dict  # {entity_type:'s_corp', revenue:..., profit:..., headcount:...}
-    owner: dict  # {hours_per_week:..., experience_years:...}
+    location: Location
+    business: Business
+    owner: Owner
     role_split: list[RoleSplit]
 
 
@@ -35,24 +54,120 @@ class EstimateResponse(BaseModel):
     flags: list[dict] = []
     assumptions: list[str] = []
     memo_url: str | None = None
+# Structured logging: configure root to emit JSON lines (middleware formats)
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+# Middleware for request id and access logs
+from src.ownerpay.api.middleware import AccessLogMiddleware, RequestIdMiddleware
+
+app.add_middleware(RequestIdMiddleware)
+app.add_middleware(AccessLogMiddleware)
+
+# Conditional rate limiting (enabled when RATE_LIMIT_REDIS_URL is present)
+import os as _os
+try:
+    import redis.asyncio as _redis
+    from fastapi_limiter import FastAPILimiter
+    from fastapi_limiter.depends import RateLimiter
+except Exception:  # pragma: no cover - optional in local/dev
+    _redis = None
+    FastAPILimiter = None
+    RateLimiter = None
 
 
-@app.post("/rc/estimate", response_model=EstimateResponse)
+@app.on_event("startup")
+async def _init_rate_limiter():
+    if _redis is None or FastAPILimiter is None:
+        return
+    url = _os.getenv("RATE_LIMIT_REDIS_URL", "")
+    if not url:
+        return
+    # Upstash typically requires SSL (rediss://)
+    redis_client = _redis.from_url(url, encoding="utf-8", decode_responses=True, ssl=True)
+    await FastAPILimiter.init(redis_client)
+
+
+
+# Health and readiness endpoints
+@app.get("/healthz", include_in_schema=False)
+def healthz():
+    return {"status": "ok"}
+
+
+@app.get("/readyz", include_in_schema=False)
+def readyz():
+    # Optionally ping dependencies here; for now return ready
+    return {"status": "ready"}
+
+
+_estimate_dependencies = []
+if 'RateLimiter' in globals() and RateLimiter is not None:
+    _estimate_dependencies = [Depends(RateLimiter(times=10, seconds=60))]
+
+
+@app.post("/rc/estimate", response_model=EstimateResponse, dependencies=_estimate_dependencies)
 def estimate(payload: EstimateRequest):
-    # Day-1 stub: return deterministic sample; replace with kernel Day-4/5
+    # Import locally to avoid import-time side effects during app startup
+    from src.ownerpay.core.kernel import compute_estimate
+    from src.ownerpay.api.util import canonicalize_estimate_payload, compute_request_id
+
+    # Convert Pydantic models to the dict-based structure expected by the kernel
+    normalized = {
+        "tax_year": payload.tax_year,
+        "location": payload.location.model_dump(),
+        "business": payload.business.model_dump(),
+        "owner": payload.owner.model_dump(),
+        "role_split": [rs.model_dump() for rs in payload.role_split],
+    }
+    kernel_payload = SimpleNamespace(
+        tax_year=normalized["tax_year"],
+        location=normalized["location"],
+        business=normalized["business"],
+        owner=normalized["owner"],
+        role_split=normalized["role_split"],
+    )
+
+    kr = compute_estimate(kernel_payload)
+
+    # Deterministic id over canonicalized payload
+    rid = compute_request_id(canonicalize_estimate_payload(normalized))
+
     return EstimateResponse(
-        id="demo-uuid",
-        low=85000,
-        median=100000,
-        high=115000,
-        recommended=98000,
-        assumptions=[f"tax_year={payload.tax_year}", "roles weighted by percent"],
-        memo_url="https://api-staging.ownerpay.dev/rc/memo/demo-uuid",
+        id=rid,
+        low=kr.low,
+        median=kr.median,
+        high=kr.high,
+        recommended=kr.recommended,
+        soc_sources=kr.soc_sources,
+        adjustments=kr.adjustments,
+        flags=kr.flags,
+        assumptions=kr.assumptions,
+        memo_url=f"/rc/memo/{rid}",
     )
 
 
-@app.get("/rc/memo/{id}")
+_memo_dependencies = []
+if 'RateLimiter' in globals() and RateLimiter is not None:
+    _memo_dependencies = [Depends(RateLimiter(times=60, seconds=60))]
+
+
+@app.get("/rc/memo/{id}", dependencies=_memo_dependencies)
 def memo(id: str):
-    if id != "demo-uuid":
-        raise HTTPException(status_code=404, detail="Not found")
-    return {"id": id, "html_url": f"https://cdn.ownerpay.dev/memos/{id}.html"}
+    from src.ownerpay.api.signing import sign_url
+
+    cdn_base = os.getenv("MEMO_CDN_BASE", "https://cdn.ownerpay.dev")
+    ttl = int(os.getenv("MEMO_TTL_SECONDS", "600"))
+    secret = os.getenv("MEMO_SIGNING_SECRET", "")
+
+    html_path = f"/memos/{id}.html"
+    pdf_path = f"/memos/{id}.pdf"
+
+    if secret:
+        html_url = sign_url(cdn_base, html_path, ttl_seconds=ttl, secret=secret)
+        pdf_url = sign_url(cdn_base, pdf_path, ttl_seconds=ttl, secret=secret)
+    else:
+        # Dev fallback: return unsigned URLs when no secret is configured
+        html_url = f"{cdn_base}{html_path}"
+        pdf_url = f"{cdn_base}{pdf_path}"
+
+    return {"id": id, "html_url": html_url, "pdf_url": pdf_url}

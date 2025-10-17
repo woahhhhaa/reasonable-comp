@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+redis>=5
+fastapi-limiter>=0.1.6
+sentry-sdk
+python-json-logger
+pydantic>=2
+pandas
+pyarrow
+
+

@@ -1,0 +1,44 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OwnerPay API",
+    "version": "0.1.0"
+  },
+  "servers": [
+    { "url": "https://api-staging.ownerpay.dev" },
+    { "url": "https://api.ownerpay.dev" },
+    { "url": "http://localhost:8000" }
+  ],
+  "paths": {
+    "/rc/estimate": {
+      "post": {
+        "summary": "Estimate reasonable compensation",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/rc/memo/{id}": {
+      "get": {
+        "summary": "Get signed memo URLs",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}
+
+
