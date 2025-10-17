@@ -9,7 +9,7 @@ jobs:
         with: { python-version: '3.12' }
       - run: python -m venv .venv && . .venv/bin/activate && python -m pip install -U pip
       - run: . .venv/bin/activate && pip install -r requirements.txt || true
-      - run: . .venv/bin/activate && pip install fastapi "uvicorn[standard]" pydantic-settings sentry-sdk pytest httpx ruff black
+      - run: . .venv/bin/activate && pip install fastapi "uvicorn[standard]" pydantic-settings sentry-sdk pytest httpx ruff black pandas requests beautifulsoup4 lxml openpyxl pyarrow
       - run: . .venv/bin/activate && ruff check .
       - run: . .venv/bin/activate && black --check .
-      - run: . .venv/bin/activate && pytest -q
+      - run: . .venv/bin/activate && python scripts/fetch_oews.py && python scripts/normalize_oews.py && python scripts/fetch_eci.py && pytest -q

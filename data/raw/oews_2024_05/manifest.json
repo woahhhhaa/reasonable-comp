@@ -1,0 +1,15 @@
+{
+  "version": "oews_2024_05",
+  "files": [
+    {
+      "name": "msa_all.xlsx",
+      "source": "synthetic",
+      "sha256_16": "6d8d2243ebcac526"
+    },
+    {
+      "name": "msa_definitions.xlsx",
+      "source": "synthetic",
+      "sha256_16": "be1d916b16674b3a"
+    }
+  ]
+}

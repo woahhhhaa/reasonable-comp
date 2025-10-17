@@ -1,0 +1,2 @@
+# OEWS May 2024 (processed)
+columns: SOC, OCC_TITLE, AREA, AREA_NAME, A_PCT10, A_PCT25, A_PCT50, A_PCT75, A_PCT90
