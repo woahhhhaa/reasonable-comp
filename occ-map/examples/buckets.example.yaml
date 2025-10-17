@@ -1,0 +1,20 @@
+- { id: sales, label: "Sales" }
+- { id: marketing, label: "Marketing" }
+- { id: success, label: "Customer Success" }
+- { id: support, label: "Customer Support" }
+- { id: operations, label: "Operations" }
+- { id: admin, label: "Administration" }
+- { id: finance, label: "Finance" }
+- { id: accounting, label: "Accounting" }
+- { id: hr, label: "HR" }
+- { id: recruiting, label: "Recruiting" }
+- { id: ithelp, label: "IT Help Desk" }
+- { id: security, label: "Security (GRC)" }
+- { id: data, label: "Data/Analytics" }
+- { id: product, label: "Product Mgmt" }
+- { id: program, label: "Program/Project Mgmt" }
+- { id: design, label: "Design/UX" }
+- { id: qa, label: "QA/Testing" }
+- { id: devops, label: "DevOps/SRE", notes: "CI/CD, IaC" }
+- { id: sw_app, label: "Software Eng (App)" }
+- { id: sw_infra, label: "Software Eng (Infra)" }

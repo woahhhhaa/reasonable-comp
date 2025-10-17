@@ -1,0 +1,36 @@
+{
+  "name": "occ-map",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "occ-map": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && mkdir -p dist/data && cp -R src/data/* dist/data/",
+    "test": "vitest run",
+    "lint": "echo skip",
+    "generate": "node dist/scripts/generate.js --in examples/buckets.example.yaml --out tmp.json --source 'O*NET 30.0 Database' --date 2025-10-17",
+    "validate": "node dist/cli.js validate --in tmp.json"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "yaml": "^2.5.0",
+    "ajv-formats": "^2.1.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

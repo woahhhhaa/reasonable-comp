@@ -1,0 +1,292 @@
+{
+  "version": "2025-10-17",
+  "source": "O*NET 30.0 Database",
+  "attribution": {
+    "text_verbatim": "This product includes information from the O*NET 30.0 Database by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). Used under the CC BY 4.0 license. O*NET® is a trademark of USDOL/ETA.",
+    "license": "CC BY 4.0",
+    "url": "https://www.onetcenter.org/license_db.html",
+    "trademark_notice": "O*NET® is a trademark of USDOL/ETA."
+  },
+  "buckets": [
+    {
+      "id": "sales",
+      "label": "Sales",
+      "soc_codes": [
+        {
+          "soc": "41-3091",
+          "weight": 0.5,
+          "reason": "shortlist: Sales Representatives of Services, Except Advertising, Insurance, Financial Services, and Travel; sales/account cue"
+        },
+        {
+          "soc": "41-4011",
+          "weight": 0.5,
+          "reason": "shortlist: Sales Representatives, Wholesale and Manufacturing, Technical and Scientific Products; sales/account cue"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "marketing",
+      "label": "Marketing",
+      "soc_codes": [
+        {
+          "soc": "11-2021",
+          "weight": 0.5,
+          "reason": "shortlist: Marketing Managers"
+        },
+        {
+          "soc": "13-1161",
+          "weight": 0.5,
+          "reason": "shortlist: Market Research Analysts and Marketing Specialists"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "success",
+      "label": "Customer Success",
+      "soc_codes": [
+        {
+          "soc": "41-3091",
+          "weight": 1,
+          "reason": "ambiguous cue: account mgmt/renewals"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "support",
+      "label": "Customer Support",
+      "soc_codes": [
+        {
+          "soc": "43-4051",
+          "weight": 1,
+          "reason": "ambiguous cue: customer support"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "operations",
+      "label": "Operations",
+      "soc_codes": [
+        {
+          "soc": "11-1021",
+          "weight": 1,
+          "reason": "ambiguous cue: broad ops mgmt"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "admin",
+      "label": "Administration",
+      "soc_codes": [
+        {
+          "soc": "11-3012",
+          "weight": 1,
+          "reason": "ambiguous cue: office/admin services"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "finance",
+      "label": "Finance",
+      "soc_codes": [
+        {
+          "soc": "11-3031",
+          "weight": 1,
+          "reason": "finance"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "accounting",
+      "label": "Accounting",
+      "soc_codes": [
+        {
+          "soc": "13-2011",
+          "weight": 0.5,
+          "reason": "shortlist: Accountants and Auditors"
+        },
+        {
+          "soc": "43-3031",
+          "weight": 0.5,
+          "reason": "shortlist: Bookkeeping, Accounting, and Auditing Clerks"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "hr",
+      "label": "HR",
+      "soc_codes": [
+        {
+          "soc": "11-3121",
+          "weight": 0.5,
+          "reason": "shortlist: Human Resources Managers"
+        },
+        {
+          "soc": "13-1071",
+          "weight": 0.5,
+          "reason": "shortlist: Human Resources Specialists"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "recruiting",
+      "label": "Recruiting",
+      "soc_codes": [
+        {
+          "soc": "15-1255",
+          "weight": 0.5,
+          "reason": "design/ux"
+        },
+        {
+          "soc": "13-1071",
+          "weight": 0.5,
+          "reason": "recruiting"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "ithelp",
+      "label": "IT Help Desk",
+      "soc_codes": [
+        {
+          "soc": "15-1232",
+          "weight": 0.5,
+          "reason": "shortlist: Computer User Support Specialists"
+        },
+        {
+          "soc": "15-1231",
+          "weight": 0.5,
+          "reason": "shortlist: Computer Network Support Specialists"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "security",
+      "label": "Security (GRC)",
+      "soc_codes": [
+        {
+          "soc": "13-1041",
+          "weight": 1,
+          "reason": "policy/compliance cue; ambiguous cue: compliance/audit"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "data",
+      "label": "Data/Analytics",
+      "soc_codes": [
+        {
+          "soc": "15-2051",
+          "weight": 1,
+          "reason": "data/analytics"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "product",
+      "label": "Product Mgmt",
+      "soc_codes": [
+        {
+          "soc": "11-2021",
+          "weight": 0.5,
+          "reason": "ambiguous cue: market/strategy positioning"
+        },
+        {
+          "soc": "13-1082",
+          "weight": 0.5,
+          "reason": "ambiguous cue: delivery/coordination"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "program",
+      "label": "Program/Project Mgmt",
+      "soc_codes": [
+        {
+          "soc": "13-1082",
+          "weight": 1,
+          "reason": "program/project"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "design",
+      "label": "Design/UX",
+      "soc_codes": [
+        {
+          "soc": "15-1255",
+          "weight": 1,
+          "reason": "design/ux"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "qa",
+      "label": "QA/Testing",
+      "soc_codes": [
+        {
+          "soc": "15-1253",
+          "weight": 1,
+          "reason": "shortlist: Software Quality Assurance Analysts and Testers; technical/coding cue"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "devops",
+      "label": "DevOps/SRE",
+      "soc_codes": [
+        {
+          "soc": "15-1252",
+          "weight": 1,
+          "reason": "technical/coding cue; ambiguous cue: coding emphasis"
+        }
+      ],
+      "notes": "CI/CD, IaC"
+    },
+    {
+      "id": "sw_app",
+      "label": "Software Eng (App)",
+      "soc_codes": [
+        {
+          "soc": "15-1252",
+          "weight": 1,
+          "reason": "software/app"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "sw_infra",
+      "label": "Software Eng (Infra)",
+      "soc_codes": [
+        {
+          "soc": "15-1252",
+          "weight": 0.5,
+          "reason": "software/app"
+        },
+        {
+          "soc": "15-1244",
+          "weight": 0.5,
+          "reason": "infrastructure"
+        }
+      ],
+      "notes": ""
+    }
+  ]
+}
