@@ -1,0 +1,19 @@
+name: Node CI (occ-map)
+on: [push, pull_request]
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: occ-map
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci || npm i
+      - run: npm run build
+      - run: npm test
+      - run: node dist/cli.js generate --in examples/buckets.example.yaml --out tmp.json --source "O*NET 30.0 Database" --date 2025-10-17
+      - run: node dist/cli.js validate --in tmp.json
+YML && git add . && git commit -m "feat(occ-map): add weighted SOC mappings + O*NET attribution" && git push

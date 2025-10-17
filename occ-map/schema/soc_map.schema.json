@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SOC Bucket Map",
+  "type": "object",
+  "required": ["version", "source", "buckets", "attribution"],
+  "properties": {
+    "version": { "type": "string" },
+    "source": { "type": "string", "enum": ["O*NET 30.0 Database"] },
+    "buckets": {
+      "type": "array",
+      "minItems": 15, "maxItems": 25,
+      "items": {
+        "type": "object",
+        "required": ["id","label","soc_codes","notes"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "soc_codes": {
+            "type": "array",
+            "minItems": 1, "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["soc","weight","reason"],
+              "properties": {
+                "soc": { "type": "string", "pattern": "^[0-9]{2}-[0-9]{4}$" },
+                "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+                "reason": { "type": "string" }
+              }
+            }
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "attribution": {
+      "type": "object",
+      "required": ["text_verbatim","license","url","trademark_notice"],
+      "properties": {
+        "text_verbatim": { "type": "string" },
+        "license": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "trademark_notice": { "type": "string" }
+      }
+    }
+  }
+}

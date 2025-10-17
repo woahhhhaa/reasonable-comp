@@ -1,0 +1,47 @@
+{
+  "version": "2025-10-17",
+  "taxonomy": "O*NET-SOC 2019 (aligned to SOC 2018)",
+  "shortlists": [
+    {
+      "bucket": "Sales",
+      "candidates": [
+        { "soc": "41-3091", "title": "Sales Representatives of Services, Except Advertising, Insurance, Financial Services, and Travel" },
+        { "soc": "41-4011", "title": "Sales Representatives, Wholesale and Manufacturing, Technical and Scientific Products" }
+      ]
+    },
+    {
+      "bucket": "Marketing",
+      "candidates": [
+        { "soc": "11-2021", "title": "Marketing Managers" },
+        { "soc": "13-1161", "title": "Market Research Analysts and Marketing Specialists" }
+      ]
+    },
+    {
+      "bucket": "Accounting",
+      "candidates": [
+        { "soc": "13-2011", "title": "Accountants and Auditors" },
+        { "soc": "43-3031", "title": "Bookkeeping, Accounting, and Auditing Clerks" }
+      ]
+    },
+    {
+      "bucket": "HR",
+      "candidates": [
+        { "soc": "11-3121", "title": "Human Resources Managers" },
+        { "soc": "13-1071", "title": "Human Resources Specialists" }
+      ]
+    },
+    {
+      "bucket": "IT Help Desk",
+      "candidates": [
+        { "soc": "15-1232", "title": "Computer User Support Specialists" },
+        { "soc": "15-1231", "title": "Computer Network Support Specialists" }
+      ]
+    },
+    {
+      "bucket": "QA/Testing",
+      "candidates": [
+        { "soc": "15-1253", "title": "Software Quality Assurance Analysts and Testers" }
+      ]
+    }
+  ]
+}
