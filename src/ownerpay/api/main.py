@@ -54,6 +54,12 @@ class EstimateResponse(BaseModel):
     flags: list[dict] = []
     assumptions: list[str] = []
     memo_url: str | None = None
+
+
+class MemoResponse(BaseModel):
+    id: str
+    html_url: str
+    pdf_url: str
 # Structured logging: configure root to emit JSON lines (middleware formats)
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
@@ -78,13 +84,17 @@ except Exception:  # pragma: no cover - optional in local/dev
 @app.on_event("startup")
 async def _init_rate_limiter():
     if _redis is None or FastAPILimiter is None:
+        # Expose state for logs
+        app.state.rate_limit_enabled = False
         return
     url = _os.getenv("RATE_LIMIT_REDIS_URL", "")
     if not url:
+        app.state.rate_limit_enabled = False
         return
     # Upstash typically requires SSL (rediss://)
     redis_client = _redis.from_url(url, encoding="utf-8", decode_responses=True, ssl=True)
     await FastAPILimiter.init(redis_client)
+    app.state.rate_limit_enabled = True
 
 
 
@@ -151,7 +161,7 @@ if 'RateLimiter' in globals() and RateLimiter is not None:
     _memo_dependencies = [Depends(RateLimiter(times=60, seconds=60))]
 
 
-@app.get("/rc/memo/{id}", dependencies=_memo_dependencies)
+@app.get("/rc/memo/{id}", response_model=MemoResponse, dependencies=_memo_dependencies)
 def memo(id: str):
     from src.ownerpay.api.signing import sign_url
 
