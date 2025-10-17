@@ -1,0 +1,15 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python -m venv .venv && . .venv/bin/activate && python -m pip install -U pip
+      - run: . .venv/bin/activate && pip install -r requirements.txt || true
+      - run: . .venv/bin/activate && pip install fastapi "uvicorn[standard]" pydantic-settings sentry-sdk pytest httpx ruff black
+      - run: . .venv/bin/activate && ruff check .
+      - run: . .venv/bin/activate && black --check .
+      - run: . .venv/bin/activate && pytest -q
