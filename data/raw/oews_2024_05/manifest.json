@@ -4,12 +4,12 @@
     {
       "name": "msa_all.xlsx",
       "source": "synthetic",
-      "sha256_16": "6d8d2243ebcac526"
+      "sha256_16": "bbfcb78716a62e6d"
     },
     {
       "name": "msa_definitions.xlsx",
       "source": "synthetic",
-      "sha256_16": "be1d916b16674b3a"
+      "sha256_16": "e6e44a90af7f9dac"
     }
   ]
 }
