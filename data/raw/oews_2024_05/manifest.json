@@ -3,12 +3,12 @@
   "files": [
     {
       "name": "msa_all.xlsx",
-      "source": "synthetic",
+      "source": "https://www.bls.gov/oes/2024/may/oessrcma.htm",
       "sha256_16": "bbfcb78716a62e6d"
     },
     {
       "name": "msa_definitions.xlsx",
-      "source": "synthetic",
+      "source": "https://www.bls.gov/oes/2024/may/msa_def.htm",
       "sha256_16": "e6e44a90af7f9dac"
     }
   ]
