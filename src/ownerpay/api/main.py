@@ -91,8 +91,8 @@ async def _init_rate_limiter():
     if not url:
         app.state.rate_limit_enabled = False
         return
-    # Upstash typically requires SSL (rediss://)
-    redis_client = _redis.from_url(url, encoding="utf-8", decode_responses=True, ssl=True)
+    # Upstash typically requires SSL (rediss://) - the URL scheme handles SSL
+    redis_client = _redis.from_url(url, encoding="utf-8", decode_responses=True)
     await FastAPILimiter.init(redis_client)
     app.state.rate_limit_enabled = True
 
